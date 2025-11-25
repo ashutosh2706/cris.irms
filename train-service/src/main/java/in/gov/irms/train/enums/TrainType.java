@@ -14,6 +14,8 @@ public enum TrainType {
     }
 
     public static enum EXPRESS {
+        SUPERFAST_EXPRESS,
+        MAIL_EXPRESS,
         GARIB_RATH,
         SAMPARK_KRANTI,
         HUMSAFAR,

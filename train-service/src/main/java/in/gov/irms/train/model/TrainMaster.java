@@ -21,8 +21,8 @@ public class TrainMaster {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private JourneyDirection journeyDirection;
-    private Integer journeyTotalDuration;
-    private Long journeyTotalDistance;
+    private Integer journeyTotalDuration;   // minutes
+    private Long journeyTotalDistance;     // meters
     @OneToOne(mappedBy = "trainMaster")
     private CoachInfo coachInfo;
 

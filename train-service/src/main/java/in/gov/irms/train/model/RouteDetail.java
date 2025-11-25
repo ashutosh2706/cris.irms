@@ -21,7 +21,7 @@ public class RouteDetail {
     private LocalTime arrivalTime = LocalTime.MIDNIGHT;
     @Column(nullable = false)
     private LocalTime departureTime = LocalTime.MIDNIGHT;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "departs_on_week_days")
     private int departsOnWeekDays = 127;
     @Column(nullable = false)
     private int dayOffset = 0;

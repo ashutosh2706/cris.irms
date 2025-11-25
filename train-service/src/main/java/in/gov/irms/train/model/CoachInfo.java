@@ -3,32 +3,32 @@ package in.gov.irms.train.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "t_train_coach_info")
+@Table(name = "t_coach_info")
 public class CoachInfo {
 
     @Id
     @Column(nullable = false)
     private int trainNumber;
+    @Column(nullable = false, name = "first_ac")
+    private int firstAC = 0;
+    @Column(nullable = false, name = "second_ac")
+    private int secondAC = 0;
+    @Column(nullable = false, name = "third_ac")
+    private int thirdAC = 0;
+    @Column(nullable = false, name = "economy_ac")
+    private int economyAC = 0;
     @Column(nullable = false)
-    private int firstAC;
+    private int secondSeater = 0;
     @Column(nullable = false)
-    private int secondAC;
+    private int sleeper = 0;
     @Column(nullable = false)
-    private int thirdAC;
+    private int general = 0;
+    @Column(nullable = false, name = "chair_car_ac")
+    private int chairCarAC = 0;
     @Column(nullable = false)
-    private int economyAC;
+    private boolean pantryCar=false;
     @Column(nullable = false)
-    private int secondSeater;
-    @Column(nullable = false)
-    private int sleeper;
-    @Column(nullable = false)
-    private int general;
-    @Column(nullable = false)
-    private int chairCarAC;
-    @Column(nullable = false)
-    private int pantryCar;
-    @Column(nullable = false)
-    private int parcelVan = 1;
+    private boolean parcelVan = true;
 
     /*
     CoachInfo is the owner of relation
@@ -36,7 +36,7 @@ public class CoachInfo {
     referenced = TrainMaster train_number column
      */
     @OneToOne
-    @JoinColumn(name = "trainNumber", referencedColumnName = "trainNumber", updatable = false)
+    @JoinColumn(name = "trainNumber", referencedColumnName = "trainNumber")
     private TrainMaster trainMaster;
 
     public int getTrainNumber() {
@@ -111,19 +111,19 @@ public class CoachInfo {
         this.chairCarAC = chairCarAC;
     }
 
-    public int getPantryCar() {
+    public boolean getPantryCar() {
         return pantryCar;
     }
 
-    public void setPantryCar(int pantryCar) {
+    public void setPantryCar(boolean pantryCar) {
         this.pantryCar = pantryCar;
     }
 
-    public int getParcelVan() {
+    public boolean getParcelVan() {
         return parcelVan;
     }
 
-    public void setParcelVan(int parcelVan) {
+    public void setParcelVan(boolean parcelVan) {
         this.parcelVan = parcelVan;
     }
 
@@ -137,8 +137,8 @@ public class CoachInfo {
             int sleeper,
             int general,
             int chairCarAC,
-            int pantryCar,
-            int parcelVan
+            boolean pantryCar,
+            boolean parcelVan
     ) {
         this.trainNumber = trainNumber;
         this.firstAC = firstAC;
