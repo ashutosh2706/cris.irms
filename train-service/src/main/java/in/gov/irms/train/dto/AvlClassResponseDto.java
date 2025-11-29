@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record AvlClassEnquiry(
+public record AvlClassResponseDto(
         @NotBlank @NotNull
         Integer trainNumber,
         List<String> firstAC,

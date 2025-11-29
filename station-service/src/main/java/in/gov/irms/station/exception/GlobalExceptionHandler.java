@@ -1,4 +1,4 @@
-package in.gov.irms.train.exception;
+package in.gov.irms.station.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidTrainNumberException.class)
+    @ExceptionHandler(NoSuchStationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handleInvalidTrainNumberException(InvalidTrainNumberException exception, HttpServletRequest request) {
+    public ResponseEntity<?> handleNoSuchStationException(NoSuchStationException exception, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse(HttpStatus.BAD_REQUEST, request, exception));
     }
 

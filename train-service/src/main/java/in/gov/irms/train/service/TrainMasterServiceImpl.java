@@ -1,6 +1,6 @@
 package in.gov.irms.train.service;
 
-import in.gov.irms.train.dto.AvlClassEnquiry;
+import in.gov.irms.train.dto.AvlClassResponseDto;
 import in.gov.irms.train.exception.InvalidTrainNumberException;
 import in.gov.irms.train.repository.CoachInfoRepository;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ public class TrainMasterServiceImpl implements TrainMasterService {
     }
 
     @Override
-    public AvlClassEnquiry getAvailableClass(Integer trainNumber) throws InvalidTrainNumberException {
+    public AvlClassResponseDto getAvailableClass(Integer trainNumber) throws InvalidTrainNumberException {
         var coachInformation = coachInfoRepository.findCoachInfoByTrainNumber(trainNumber);
         if (coachInformation.isEmpty()) throw new InvalidTrainNumberException(String.format("Train Number: %s is invalid", trainNumber));
         var coachInfo = coachInformation.get();
         List<String> otherCoaches = new ArrayList<>();
         if (coachInfo.getPantryCar()) otherCoaches.add("PC");
         if (coachInfo.getParcelVan()) otherCoaches.add("HCP");
-        return new AvlClassEnquiry(
+        return new AvlClassResponseDto(
                 coachInfo.getTrainNumber(),
                 IntStream.range(1, coachInfo.getFirstAC()+1).mapToObj(i -> "H"+i).toList(),
                 IntStream.range(1, coachInfo.getSecondAC()+1).mapToObj(i -> "A"+i).toList(),
