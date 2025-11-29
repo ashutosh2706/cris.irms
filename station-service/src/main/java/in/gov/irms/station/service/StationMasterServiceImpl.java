@@ -38,4 +38,13 @@ public class StationMasterServiceImpl implements StationMasterService {
                 .map(StationMapper::tostationResponseDto)
                 .toList();
     }
+
+    @Override
+    public StationResponseDto getStationByStationId(long stationId) throws NoSuchStationException {
+        var station = stationMasterRepository.findByStationId(stationId).orElseThrow(
+                () -> new NoSuchStationException(String.format("No station found for id [%s]", stationId))
+        );
+        return StationMapper.tostationResponseDto(station);
+    }
+
 }

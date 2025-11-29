@@ -27,4 +27,10 @@ public class StationController {
         var response = stationMasterService.getAllStation(stateName);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findByStationId(@PathVariable(name = "id") long id) throws NoSuchStationException {
+        var response = stationMasterService.getStationByStationId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

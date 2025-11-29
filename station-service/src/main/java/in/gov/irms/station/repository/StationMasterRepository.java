@@ -14,6 +14,9 @@ public interface StationMasterRepository extends JpaRepository<Station, Long> {
     @Query("SELECT s FROM Station s where s.stationCode = :stationCode")
     Optional<Station> findByStationCode(@Param(value = "stationCode") String stationCode);
 
+    @Query("SELECT s FROM Station s where s.id = :id")
+    Optional<Station> findByStationId(@Param(value = "id") long id);
+
     @Query("SELECT s FROM Station s where s.stateName = :stateName")
     List<Station> findAllStationByStateName(@Param(value = "stateName") String stateName);
 
