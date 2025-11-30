@@ -1,10 +1,13 @@
 package in.gov.irms.train.service;
 
 import in.gov.irms.train.dto.AvlClassResponseDto;
+import in.gov.irms.train.dto.TrainEnquiryResponseDTO;
 import in.gov.irms.train.exception.InvalidTrainNumberException;
+import in.gov.irms.train.exception.StationServiceException;
 
 public interface TrainMasterService {
 
-    public AvlClassResponseDto getAvailableClass(Integer trainNumber) throws InvalidTrainNumberException;
+    AvlClassResponseDto getAvailableClass(Integer trainNumber) throws InvalidTrainNumberException;
+    TrainEnquiryResponseDTO getTrainInfo(int trainNumber) throws InvalidTrainNumberException, StationServiceException;
 
 }

@@ -1,6 +1,7 @@
 package in.gov.irms.train.controller;
 
 import in.gov.irms.train.exception.InvalidTrainNumberException;
+import in.gov.irms.train.exception.StationServiceException;
 import in.gov.irms.train.service.TrainMasterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +19,9 @@ public class TrainMasterController {
     }
 
     @GetMapping(value = "/enquiry/{trainNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getTrainInfo(@PathVariable(name = "trainNumber") Integer trainNumber) {
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<?> getTrainInfo(@PathVariable(name = "trainNumber") Integer trainNumber) throws InvalidTrainNumberException, StationServiceException {
+        var response = trainMasterService.getTrainInfo(trainNumber);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/avlClass/{trainNumber}", produces = MediaType.APPLICATION_JSON_VALUE)

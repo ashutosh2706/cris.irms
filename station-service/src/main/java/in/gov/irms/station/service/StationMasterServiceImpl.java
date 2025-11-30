@@ -1,12 +1,13 @@
 package in.gov.irms.station.service;
 
-import in.gov.irms.station.dto.StationResponseDto;
+import in.gov.irms.station.dto.BulkStationDetailRequestDTO;
+import in.gov.irms.station.dto.StationResponseDTO;
 import in.gov.irms.station.exception.NoSuchStationException;
 import in.gov.irms.station.mapper.StationMapper;
 import in.gov.irms.station.repository.StationMasterRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StationMasterServiceImpl implements StationMasterService {
@@ -17,8 +18,9 @@ public class StationMasterServiceImpl implements StationMasterService {
         this.stationMasterRepository = stationMasterRepository;
     }
 
+    // add redis caching here
     @Override
-    public StationResponseDto getStationByStationCode(String stationCode) throws NoSuchStationException {
+    public StationResponseDTO getStationByStationCode(String stationCode) throws NoSuchStationException {
         var station = stationMasterRepository.findByStationCode(stationCode).orElseThrow(
                 () -> new NoSuchStationException(String.format("No station found for code [%s]", stationCode))
         );
@@ -26,7 +28,7 @@ public class StationMasterServiceImpl implements StationMasterService {
     }
 
     @Override
-    public List<StationResponseDto> getAllStation(String stateName) {
+    public List<StationResponseDTO> getAllStation(String stateName) {
         if(stateName == null || stateName.trim().isEmpty() || stateName.trim().isBlank()) {
             return stationMasterRepository.findAll()
                     .stream()
@@ -39,12 +41,27 @@ public class StationMasterServiceImpl implements StationMasterService {
                 .toList();
     }
 
+    // add redis caching
     @Override
-    public StationResponseDto getStationByStationId(long stationId) throws NoSuchStationException {
+    public StationResponseDTO getStationByStationId(long stationId) throws NoSuchStationException {
         var station = stationMasterRepository.findByStationId(stationId).orElseThrow(
                 () -> new NoSuchStationException(String.format("No station found for id [%s]", stationId))
         );
         return StationMapper.tostationResponseDto(station);
     }
 
+    @Override
+    public Object getBulkStationDetails(BulkStationDetailRequestDTO requestDto) {
+        Map<Long, StationResponseDTO> responseDtoMap = new LinkedHashMap<>();
+        Collections.sort(requestDto.stationId());
+        requestDto.stationId().forEach(stationId -> {
+            try {
+                var stationInfo = getStationByStationId(stationId);
+                responseDtoMap.put(stationId, stationInfo);
+            } catch (NoSuchStationException e) {
+                responseDtoMap.put(stationId, null);
+            }
+        });
+        return responseDtoMap;
+    }
 }

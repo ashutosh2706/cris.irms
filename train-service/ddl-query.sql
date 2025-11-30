@@ -42,3 +42,11 @@ create table trains.t_route_detail(
 	distance_covered BIGINT,
 	primary key(id)
 );
+
+-- t_train_master.train_number violating f_key constraint of t_coach_info.train_number (it must be pkey)
+-- migration
+
+alter table trains.t_train_master drop constraint t_train_master_pkey;
+alter table trains.t_train_master drop column id;
+alter table trains.t_train_master add constraint t_train_master_pkey primary key (train_number);
+drop sequence if exists trains.t_train_master_seq cascade;

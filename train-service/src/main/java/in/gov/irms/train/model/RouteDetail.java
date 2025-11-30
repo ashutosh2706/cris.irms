@@ -22,7 +22,7 @@ public class RouteDetail {
     @Column(nullable = false)
     private LocalTime departureTime = LocalTime.MIDNIGHT;
     @Column(nullable = false, name = "departs_on_week_days")
-    private int departsOnWeekDays = 127;
+    private int departsOnWeekDays = 127;    // starting sunday
     @Column(nullable = false)
     private int dayOffset = 0;
     private Long distanceCovered = 0L;

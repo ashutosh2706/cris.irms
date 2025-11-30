@@ -8,10 +8,7 @@ import jakarta.persistence.*;
 @Table(name = "t_train_master")
 public class TrainMaster {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_master_seq")
-    @SequenceGenerator(name = "train_master_seq", sequenceName = "t_train_master_seq", allocationSize = 5)
-    private long id;
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(updatable = false)
     private int trainNumber;
     @Column(nullable = false)
     private String trainName;
@@ -25,14 +22,6 @@ public class TrainMaster {
     private Long journeyTotalDistance;     // meters
     @OneToOne(mappedBy = "trainMaster")
     private CoachInfo coachInfo;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getTrainNumber() {
         return trainNumber;
@@ -82,22 +71,30 @@ public class TrainMaster {
         this.journeyTotalDistance = distance;
     }
 
+    public CoachInfo getCoachInfo() {
+        return coachInfo;
+    }
+
+    public void setCoachInfo(CoachInfo coachInfo) {
+        this.coachInfo = coachInfo;
+    }
+
     public TrainMaster(
-            long id,
             int trainNumber,
             String trainName,
             TrainType trainType,
             JourneyDirection direction,
             Integer duration,
-            Long distance
+            Long distance,
+            CoachInfo coachInfo
     ) {
-        this.id = id;
         this.trainNumber = trainNumber;
         this.trainName = trainName;
         this.trainType = trainType;
         this.journeyDirection = direction;
         this.journeyTotalDuration = duration;
         this.journeyTotalDistance = distance;
+        this.coachInfo = coachInfo;
     }
 
     public TrainMaster() {}
