@@ -37,7 +37,8 @@ public class StationServiceClient {
                         requestUrl,
                         HttpMethod.POST,
                         request,
-                        new ParameterizedTypeReference<Map<Long, StationServiceApi.StationResponseDTO>>() {}
+                        new ParameterizedTypeReference<>() {
+                        }
                 );
 
         if(response.getStatusCode().is5xxServerError()) {

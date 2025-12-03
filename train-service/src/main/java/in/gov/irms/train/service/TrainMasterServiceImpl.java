@@ -59,7 +59,6 @@ public class TrainMasterServiceImpl implements TrainMasterService {
                 () -> new InvalidTrainNumberException(String.format("TrainNumber: %s is invalid", trainNumber))
         );
         var avlClassList = CoachInfoMapper.toAvlClass(trainMaster.getCoachInfo());
-
         PagedResponseDTO<RouteDetail> routeDetailPage = routeDetailService.getRouteListByTrainNumber(trainNumber, 1, 150);
         var stationIdList = routeDetailPage.data().stream().map(RouteDetail::getStationId).toList();
         Map<Long, StationServiceApi.StationResponseDTO> responseDTOMap = stationServiceClient.getStationDetailByBulkId(
@@ -82,6 +81,7 @@ public class TrainMasterServiceImpl implements TrainMasterService {
             var stationInfo = new RouteStationInfo(
                     station == null ? "" : station.stationCode(),
                     station == null ? "" : station.stationName(),
+                    station == null ? "" : station.stateName(),
                     route.getArrivalSequence() == 0 ? "--:--" : route.getArrivalTime().toString(),
                     route.getArrivalSequence() == (routeDetailPage.data().size()-1) ? "--:--" : route.getDepartureTime().toString(),
                     LocalTime.MIDNIGHT.plus(Duration.between(route.getArrivalTime(), route.getDepartureTime())).toString(),
@@ -96,6 +96,7 @@ public class TrainMasterServiceImpl implements TrainMasterService {
         return new TrainEnquiryResponseDTO(
                 trainMaster.getTrainNumber(),
                 trainMaster.getTrainName(),
+                trainMaster.getTrainType().toString(),
                 fromStationCode,
                 toStationCode,
                 runningDays.get(6),

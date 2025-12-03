@@ -5,6 +5,7 @@ import java.util.List;
 public record TrainEnquiryResponseDTO(
    Integer trainNumber,
    String trainName,
+   String trainType,
    String stationFrom,
    String stationTo,
    String trainRunsOnSun,
