@@ -7,6 +7,7 @@ public class StationMapper {
 
     public static StationResponseDTO tostationResponseDto(Station station) {
         return new StationResponseDTO(
+                station.getId(),
                 station.getStationCode(),
                 station.getStationName(),
                 station.getStateName(),

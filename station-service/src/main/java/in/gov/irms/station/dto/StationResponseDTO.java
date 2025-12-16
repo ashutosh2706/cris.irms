@@ -3,6 +3,7 @@ package in.gov.irms.station.dto;
 import in.gov.irms.station.enums.StationType;
 
 public record StationResponseDTO(
+        long stationId,
         String stationCode,
         String stationName,
         String stateName,

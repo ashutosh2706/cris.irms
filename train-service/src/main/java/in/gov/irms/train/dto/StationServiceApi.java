@@ -13,6 +13,7 @@ public class StationServiceApi {
     ) {}
 
     public record StationResponseDTO(
+            Long stationId,
             String stationCode,
             String stationName,
             String stateName,

@@ -70,7 +70,7 @@ public class TrainMasterServiceImpl implements TrainMasterService {
         String fromStationCode = responseDTOMap.getOrDefault(from.getStationId(), null) == null ? "" : responseDTOMap.get(from.getStationId()).stationCode();
         String toStationCode = responseDTOMap.getOrDefault(to.getStationId(), null) == null ? "" : responseDTOMap.get(to.getStationId()).stationCode();
         int runningDaysBit = from.getDepartsOnWeekDays();
-        // starts with saturday...sunday
+        // looping from saturday...sunday
         List<String> runningDays = Stream.iterate(0, n -> n<7, n->n+1).map(n ->
             ((runningDaysBit & (1 << n)) > 0) ? "Y" : "N"
         ).toList();
