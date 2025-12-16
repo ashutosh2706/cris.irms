@@ -50,3 +50,7 @@ alter table trains.t_train_master drop constraint t_train_master_pkey;
 alter table trains.t_train_master drop column id;
 alter table trains.t_train_master add constraint t_train_master_pkey primary key (train_number);
 drop sequence if exists trains.t_train_master_seq cascade;
+
+-- indexes on t_route_detail
+create index idx_train_station_sequence on trains.t_route_detail (train_number, station_id, arrival_sequence);
+create index idx_departure on trains.t_route_detail(departure_time);

@@ -37,8 +37,7 @@ public class StationServiceClient {
                         requestUrl,
                         HttpMethod.POST,
                         request,
-                        new ParameterizedTypeReference<>() {
-                        }
+                        new ParameterizedTypeReference<>() {}
                 );
 
         if(response.getStatusCode().is5xxServerError()) {
@@ -50,5 +49,29 @@ public class StationServiceClient {
         }
 
         return response.getBody();
+    }
+
+    public StationServiceApi.StationResponseDTO getStnDetailByStnCode(String stationCode) throws StationServiceException {
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setBearerAuth("");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<StationServiceApi.StationResponseDTO> response = restTemplate.exchange(
+                stationServiceBaseUrl,
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<StationServiceApi.StationResponseDTO>() {}
+        );
+
+        if(response.getStatusCode().is5xxServerError()) {
+            throw new StationServiceException(String.format("Station Service failed. Status: %s", response.getStatusCode().value()));
+        }
+
+        if(response.getStatusCode().is4xxClientError()) {
+            throw new StationServiceException(String.format("Station Service failed. Status: %s \n Response: %s", response.getStatusCode().value(), response.getBody()));
+        }
+
+        return response.getBody();
+
     }
 }

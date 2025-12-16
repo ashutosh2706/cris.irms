@@ -1,7 +1,10 @@
 package in.gov.irms.train.service;
 
+import in.gov.irms.train.client.StationServiceClient;
+import in.gov.irms.train.dto.DirectTrainsBtwStnReqDTO;
 import in.gov.irms.train.dto.PagedResponseDTO;
 import in.gov.irms.train.exception.InvalidTrainNumberException;
+import in.gov.irms.train.exception.StationServiceException;
 import in.gov.irms.train.model.RouteDetail;
 import in.gov.irms.train.repository.RouteDetailRepository;
 import org.springframework.data.domain.PageRequest;
@@ -11,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class RouteDetailServiceImpl implements RouteDetailService {
 
     private final RouteDetailRepository routeDetailRepository;
+    private final StationServiceClient stationServiceClient;
 
-    public RouteDetailServiceImpl(RouteDetailRepository routeDetailRepository) {
+    public RouteDetailServiceImpl(RouteDetailRepository routeDetailRepository, StationServiceClient stationServiceClient) {
         this.routeDetailRepository = routeDetailRepository;
+        this.stationServiceClient = stationServiceClient;
     }
 
     @Override
@@ -43,5 +48,13 @@ public class RouteDetailServiceImpl implements RouteDetailService {
         var page = getRouteListByTrainNumber(trainNumber, 1, Integer.MAX_VALUE-1);
         if (page.data().isEmpty()) throw new InvalidTrainNumberException(String.format("TrainNumber: %s is invalid", trainNumber));
         return page.data().get((int) page.pageSize() - 1);
+    }
+
+    public void getDirectTrainsBtwStations(DirectTrainsBtwStnReqDTO reqDTO) throws StationServiceException {
+        String fromStation = reqDTO.fromStation();
+        String toStation = reqDTO.toStation();
+        var fromStationData = stationServiceClient.getStnDetailByStnCode(fromStation);
+        var toStationData = stationServiceClient.getStnDetailByStnCode(toStation);
+
     }
 }
