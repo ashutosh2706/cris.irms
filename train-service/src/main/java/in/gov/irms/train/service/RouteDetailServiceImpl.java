@@ -2,17 +2,24 @@ package in.gov.irms.train.service;
 
 import in.gov.irms.train.client.StationServiceClient;
 import in.gov.irms.train.dto.DirectTrainsBtwStnReqDTO;
+import in.gov.irms.train.dto.InterStationConnection;
 import in.gov.irms.train.dto.PagedResponseDTO;
 import in.gov.irms.train.exception.InvalidTrainNumberException;
 import in.gov.irms.train.exception.StationServiceException;
+import in.gov.irms.train.mapper.InterStationConnectionsMapper;
 import in.gov.irms.train.model.RouteDetail;
 import in.gov.irms.train.repository.RouteDetailRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RouteDetailServiceImpl implements RouteDetailService {
 
+    private static final Logger log = LoggerFactory.getLogger(RouteDetailServiceImpl.class);
     private final RouteDetailRepository routeDetailRepository;
     private final StationServiceClient stationServiceClient;
 
@@ -50,11 +57,20 @@ public class RouteDetailServiceImpl implements RouteDetailService {
         return page.data().get((int) page.pageSize() - 1);
     }
 
-    public void getDirectTrainsBtwStations(DirectTrainsBtwStnReqDTO reqDTO) throws StationServiceException {
-        String fromStation = reqDTO.fromStation();
-        String toStation = reqDTO.toStation();
-        var fromStationData = stationServiceClient.getStnDetailByStnCode(fromStation);
-        var toStationData = stationServiceClient.getStnDetailByStnCode(toStation);
-
+    @Override
+    public List<InterStationConnection> getDirectTrainsBtwStations(DirectTrainsBtwStnReqDTO reqDTO) throws StationServiceException {
+        String stationFrom = reqDTO.stationFrom();
+        String stationTo = reqDTO.stationTo();
+        String onDate = reqDTO.date();
+        var fromStationData = stationServiceClient.getStnDetailByStnCode(stationFrom);
+        var toStationData = stationServiceClient.getStnDetailByStnCode(stationTo);
+        java.util.List<InterStationConnection> stationConnections = routeDetailRepository.findDirectTrainsBetweenTwoStn(
+                fromStationData.stationId(),
+                toStationData.stationId()
+        ).stream()
+                .map(InterStationConnectionsMapper::toInterStationConnection)
+                .toList();
+        log.info("Connections length: {}", stationConnections.size());
+        return stationConnections;
     }
 }

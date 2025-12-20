@@ -52,12 +52,13 @@ public class StationServiceClient {
     }
 
     public StationServiceApi.StationResponseDTO getStnDetailByStnCode(String stationCode) throws StationServiceException {
+        String requestUrl = stationServiceBaseUrl + "/" + stationCode;
         org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
         headers.setBearerAuth("");
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<StationServiceApi.StationResponseDTO> response = restTemplate.exchange(
-                stationServiceBaseUrl,
+                requestUrl,
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<StationServiceApi.StationResponseDTO>() {}
