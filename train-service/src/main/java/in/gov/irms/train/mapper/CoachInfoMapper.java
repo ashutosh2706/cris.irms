@@ -29,7 +29,7 @@ public class CoachInfoMapper {
         );
     }
 
-    public static Map<String, List<String>> toAvlClass(CoachInfo coachInfo) {
+    public static Map<String, List<String>> toAvlClassMap(CoachInfo coachInfo) {
         Map<String, List<String>> avlClassMap = new LinkedHashMap<>();
         var avlClassDTO = toAvlClassResponseDTO(coachInfo);
         avlClassMap.put("firstAC", avlClassDTO.firstAC());
@@ -44,4 +44,16 @@ public class CoachInfoMapper {
         return avlClassMap;
     }
 
+    public static List<String> toAvlClassSimpleList(CoachInfo coachInfo) {
+        List<String> list = new ArrayList<>();
+        if (coachInfo.getFirstAC() > 0) list.add("1A");
+        if (coachInfo.getSecondAC() > 0) list.add("2A");
+        if (coachInfo.getThirdAC() > 0) list.add("3A");
+        if (coachInfo.getEconomyAC() > 0) list.add("3E");
+        if (coachInfo.getSleeper() > 0) list.add("SL");
+        if (coachInfo.getSecondSeater() > 0) list.add("2S");
+        if (coachInfo.getGeneral() > 0) list.add("GN");
+        if (coachInfo.getChairCarAC() > 0) list.add("CC");
+        return list;
+    }
 }

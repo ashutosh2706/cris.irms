@@ -24,6 +24,9 @@ public class StationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /*
+    TODO: use pagination for all stations list
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findAllStation(@RequestParam(name = "state", required = false) String stateName) {
         var response = stationMasterService.getAllStation(stateName);

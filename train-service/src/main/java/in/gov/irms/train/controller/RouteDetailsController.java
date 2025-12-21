@@ -1,6 +1,7 @@
 package in.gov.irms.train.controller;
 
 import in.gov.irms.train.dto.DirectTrainsBtwStnReqDTO;
+import in.gov.irms.train.exception.InvalidTrainNumberException;
 import in.gov.irms.train.exception.StationServiceException;
 import in.gov.irms.train.service.RouteDetailService;
 import jakarta.validation.Valid;
@@ -24,7 +25,8 @@ public class RouteDetailsController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> getDirectTrainsBtwStations(@Valid @RequestBody DirectTrainsBtwStnReqDTO request) throws StationServiceException {
+    public ResponseEntity<?> getDirectTrainsBtwStations(@Valid @RequestBody DirectTrainsBtwStnReqDTO request)
+            throws StationServiceException, InvalidTrainNumberException {
         return ResponseEntity.ok().body(routeDetailService.getDirectTrainsBtwStations(request));
     }
 }
