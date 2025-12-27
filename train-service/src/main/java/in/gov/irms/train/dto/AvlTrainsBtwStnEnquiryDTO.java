@@ -3,7 +3,7 @@ package in.gov.irms.train.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DirectTrainsBtwStnReqDTO (
+public record AvlTrainsBtwStnEnquiryDTO(
         @NotBlank(message = "Parameter 'stationFrom' can't be empty")
         @NotNull(message = "Parameter 'stationFrom' is required")
         String stationFrom,

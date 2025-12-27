@@ -1,6 +1,6 @@
 package in.gov.irms.train.controller;
 
-import in.gov.irms.train.dto.DirectTrainsBtwStnReqDTO;
+import in.gov.irms.train.dto.AvlTrainsBtwStnEnquiryDTO;
 import in.gov.irms.train.exception.InvalidTrainNumberException;
 import in.gov.irms.train.exception.StationServiceException;
 import in.gov.irms.train.service.RouteDetailService;
@@ -21,12 +21,24 @@ public class RouteDetailsController {
         this.routeDetailService = routeDetailService;
     }
 
-    @PostMapping(value = "/search",
+    @PostMapping(value = "/direct",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> getDirectTrainsBtwStations(@Valid @RequestBody DirectTrainsBtwStnReqDTO request)
+    public ResponseEntity<?> getDirectTrainsBtwStations(@Valid @RequestBody AvlTrainsBtwStnEnquiryDTO request)
             throws StationServiceException, InvalidTrainNumberException {
         return ResponseEntity.ok().body(routeDetailService.getDirectTrainsBtwStations(request));
+    }
+
+    @PostMapping(value = "/indirect",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> getIndirectTrainsBtwStn(
+            @Valid @RequestBody AvlTrainsBtwStnEnquiryDTO request,
+            @RequestParam(name = "oneTransferJourney", required = false, defaultValue = "True") Boolean oneTransferJourney
+    )
+        throws StationServiceException, InvalidTrainNumberException {
+        return ResponseEntity.ok().body(routeDetailService.getIndirectTrainBtwStn(request, oneTransferJourney));
     }
 }

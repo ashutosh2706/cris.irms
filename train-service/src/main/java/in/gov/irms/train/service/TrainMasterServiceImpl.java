@@ -2,7 +2,7 @@ package in.gov.irms.train.service;
 
 import in.gov.irms.train.client.StationServiceClient;
 import in.gov.irms.train.dto.AvlClassResponseDto;
-import in.gov.irms.train.dto.TrainEnquiryResponseDTO;
+import in.gov.irms.train.dto.TrainMasterEnquiryResponseDTO;
 import in.gov.irms.train.dto.PagedResponseDTO;
 import in.gov.irms.train.dto.RouteStationInfo;
 import in.gov.irms.train.dto.StationServiceApi;
@@ -54,7 +54,7 @@ public class TrainMasterServiceImpl implements TrainMasterService {
     }
 
     @Override
-    public TrainEnquiryResponseDTO getTrainInfo(int trainNumber) throws InvalidTrainNumberException, StationServiceException {
+    public TrainMasterEnquiryResponseDTO getTrainInfo(int trainNumber) throws InvalidTrainNumberException, StationServiceException {
         TrainMaster trainMaster = trainMasterRepository.findByTrainNumber(trainNumber).orElseThrow(
                 () -> new InvalidTrainNumberException(String.format("TrainNumber: %s is invalid", trainNumber))
         );
@@ -93,7 +93,7 @@ public class TrainMasterServiceImpl implements TrainMasterService {
             routeInfoList.add(stationInfo);
         });
 
-        return new TrainEnquiryResponseDTO(
+        return new TrainMasterEnquiryResponseDTO(
                 trainMaster.getTrainNumber(),
                 trainMaster.getTrainName(),
                 trainMaster.getTrainType().toString(),

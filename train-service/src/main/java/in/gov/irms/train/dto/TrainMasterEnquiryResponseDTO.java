@@ -2,7 +2,7 @@ package in.gov.irms.train.dto;
 
 import java.util.List;
 
-public record TrainEnquiryResponseDTO(
+public record TrainMasterEnquiryResponseDTO(
    Integer trainNumber,
    String trainName,
    String trainType,
